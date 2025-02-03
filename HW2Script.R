@@ -41,7 +41,7 @@ mid.points <- (left.points+right.points)/2
 # Question 1(a) Trapezoidial Rule
 ################################################################################
 trap.points <- a + 0:100*(delta.x)
-vector.areas <- delta.x*(integrand(trap.points)). #vector that the integrand function returns
+vector.areas <- delta.x*(integrand(trap.points)) #vector that the integrand function returns
 (trap.area <- (1/2)*vector.areas[1] + sum(vector.areas[2:100]) + (1/2)*vector.areas[101])
 ################################################################################
 # Question 1(b) Skeleton
@@ -94,7 +94,8 @@ riemann.sums <- function(fnct,                        # function to integrate
 riemann.sums(fnct = integrand,
              a = 0,
              b = 2,
-             n.rect = 100)
+             n.rect = 100,
+             method = "Trapezoidial")
 ######################################
 # Compare to numerical integral
 ######################################
