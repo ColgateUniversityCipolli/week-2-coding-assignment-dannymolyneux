@@ -1,0 +1,244 @@
+\documentclass{article}\usepackage[]{graphicx}\usepackage[]{xcolor}
+% maxwidth is the original width if it is less than linewidth
+% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlsng}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hldef}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+\let\hlipl\hlkwb
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+\usepackage[margin=1.0in]{geometry} % To set margins
+\usepackage{amsmath}  % This allows me to use the align functionality.
+                      % If you find yourself trying to replicate
+                      % something you found online, ensure you're
+                      % loading the necessary packages!
+\usepackage{amsfonts} % Math font
+\usepackage{fancyvrb}
+\usepackage{hyperref} % For including hyperlinks
+\usepackage[shortlabels]{enumitem}% For enumerated lists with labels specified
+                                  % We had to run tlmgr_install("enumitem") in R
+\usepackage{float}    % For telling R where to put a table/figure
+\usepackage{natbib}        %For the bibliography
+\bibliographystyle{apalike}%For the bibliography
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+\begin{enumerate}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% QUESTION 1
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item Consider the following integral:
+\[\int_{a}^{b} (7-x^2)dx.\]
+While this is a relatively straightforward integral -- split the difference and use power rule for integration -- we can approximate the area under this curve using Riemann sums. Below, I describe four rules for computing Riemann sums using rectangles of width $\delta_x$.
+\begin{itemize}
+  \item Left Rule uses the left points to create the rectangles.
+  \[\text{Area} = \delta_x (f(a) + f(a + \delta_x) + f(a +2\delta_x) + \cdots + f(b-\delta_x))\]
+  \item Right Rule uses the right points to create the rectangles.
+  \[\text{Area} = \delta_x (f(a + \delta_x) + f(a +2\delta_x) + \cdots + f(b-\delta_x) + f(b))\]
+  \item Midpoint Rule uses the midpoints between the left and right points to create the rectangles.
+  \[\text{Area} = \delta_x \left(f\left(a + \frac{\delta_x}{2}\right) + f\left(a + \frac{3\delta_x}{2}\right) + \cdots +  f\left(b - \frac{\delta_x}{2}\right)\right)\]
+  \item Trapezoidial Rule averages the rectangles created using left and right endpoints, which results in areas of trapezoids.
+  \[\text{Area} = \frac{1}{2} \delta_x \left(f(a) + 2f(a + \delta_x) + 2f(a+2\delta_x) + \cdots + f(b)\right)\]
+\end{itemize}
+The first step, is to create a function that computes the integrand.
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{integrand} \hlkwb{<-} \hlkwa{function}\hldef{(}\hlkwc{x}\hldef{)\{}
+  \hldef{f} \hlkwb{<-} \hlnum{7} \hlopt{-} \hlnum{2} \hlopt{*} \hldef{x}\hlopt{^}\hlnum{2}
+  \hlkwd{return}\hldef{(f)}
+\hldef{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+Next, I set up an example choice of $a$, $b$, and the number of rectangles.
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{a} \hlkwb{<-} \hlnum{0}
+\hldef{b} \hlkwb{<-} \hlnum{2}
+\hldef{n.rect} \hlkwb{<-} \hlnum{100}
+\hldef{(delta.x} \hlkwb{<-} \hldef{(b}\hlopt{-}\hldef{a)}\hlopt{/}\hldef{n.rect)}
+\end{alltt}
+\begin{verbatim}
+## [1] 0.02
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+We can compute the area using the Left Rule as follows.
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{left.points} \hlkwb{<-} \hldef{a} \hlopt{+} \hlnum{0}\hlopt{:}\hlnum{99}\hlopt{*}\hldef{(delta.x)}
+\hldef{(left.area} \hlkwb{<-} \hlkwd{sum}\hldef{(delta.x}\hlopt{*}\hldef{(}\hlkwd{integrand}\hldef{(left.points))))}
+\end{alltt}
+\begin{verbatim}
+## [1] 8.7464
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+We can compute the area using the Right Rule as follows.
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{right.points} \hlkwb{<-} \hldef{a} \hlopt{+} \hlnum{1}\hlopt{:}\hlnum{100}\hlopt{*}\hldef{(delta.x)}
+\hldef{(right.area} \hlkwb{<-} \hlkwd{sum}\hldef{(delta.x}\hlopt{*}\hldef{(}\hlkwd{integrand}\hldef{(right.points))))}
+\end{alltt}
+\begin{verbatim}
+## [1] 8.5864
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+We can compute the area using the Midpoint Rule as follows.
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{mid.points} \hlkwb{<-} \hldef{(left.points}\hlopt{+}\hldef{right.points)}\hlopt{/}\hlnum{2}
+\hldef{(mid.area} \hlkwb{<-} \hlkwd{sum}\hldef{(delta.x}\hlopt{*}\hldef{(}\hlkwd{integrand}\hldef{(mid.points))))}
+\end{alltt}
+\begin{verbatim}
+## [1] 8.6668
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\newpage
+\begin{enumerate}
+  \item Write code that computes the area using the Trapezoidial Rule.\\
+  \textbf{Solution:}
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{trap.points} \hlkwb{<-} \hldef{a} \hlopt{+} \hlnum{0}\hlopt{:}\hlnum{100}\hlopt{*}\hldef{(delta.x)}
+\hldef{vector.areas} \hlkwb{<-} \hldef{delta.x}\hlopt{*}\hldef{(}\hlkwd{integrand}\hldef{(trap.points))} \hlcom{#vector that the integrand function returns}
+\hldef{(trap.area} \hlkwb{<-} \hldef{(}\hlnum{1}\hlopt{/}\hlnum{2}\hldef{)}\hlopt{*}\hldef{vector.areas[}\hlnum{1}\hldef{]} \hlopt{+} \hlkwd{sum}\hldef{(vector.areas[}\hlnum{2}\hlopt{:}\hlnum{100}\hldef{])} \hlopt{+} \hldef{(}\hlnum{1}\hlopt{/}\hlnum{2}\hldef{)}\hlopt{*}\hldef{vector.areas[}\hlnum{101}\hldef{])}
+\end{alltt}
+\begin{verbatim}
+## [1] 8.6664
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+  \item Write a function that takes \texttt{a}, \texttt{b}, and number of 
+  rectangles (\texttt{n.rect}) in as input and returns the Trapezoidial Rule 
+  by default, but can return left, right, or midpoint when necessary. Use the
+  skeleton below. When you are done, remove \texttt{eval=FALSE} to show that
+  the function provides the expected result for the example above.\\
+  \textbf{Solution:}
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{riemann.sums} \hlkwb{<-} \hlkwa{function}\hldef{(}\hlkwc{fnct}\hldef{,}                        \hlcom{# function to integrate}
+                         \hlkwc{a}\hldef{,}                           \hlcom{# lower bound of integral}
+                         \hlkwc{b}\hldef{,}                           \hlcom{# upper bound of integral}
+                         \hlkwc{n.rect}\hldef{,}                      \hlcom{# number of  bound of integral}
+                         \hlkwc{method} \hldef{=} \hlsng{"Trapezoidial"}\hldef{)\{}    \hlcom{# method to use (trap by default)}
+  \hlcom{######################################}
+  \hlcom{# Check Input}
+  \hlcom{######################################}
+  \hlkwa{if}\hldef{(}\hlopt{!}\hlkwd{is.numeric}\hldef{(a))\{} \hlcom{# if a is not numeric}
+    \hlkwd{stop}\hldef{(}\hlsng{"The lower bound of the integral (a) must be numeric."}\hldef{)}
+  \hldef{\}}
+  \hlkwa{if}\hldef{(}\hlopt{!}\hlkwd{is.numeric}\hldef{(b))\{} \hlcom{# if b is not numeric}
+    \hlkwd{stop}\hldef{(}\hlsng{"The lower bound of the integral (a) must be numeric."}\hldef{)}
+  \hldef{\}}
+  \hlkwa{if}\hldef{(}\hlopt{!}\hldef{(}\hlkwd{is.numeric}\hldef{(n.rect))} \hlopt{|} \hldef{(n.rect}\hlopt{%%}\hlnum{1}\hlopt{!=}\hlnum{0}\hldef{))\{} \hlcom{# if n.rect is not a whole number}
+    \hlkwd{stop}\hldef{(}\hlsng{"The number of rectangles must be a positive whole number."}\hldef{)}
+  \hldef{\}}
+  \hlcom{######################################}
+  \hlcom{# Compute Area}
+  \hlcom{######################################}
+  \hldef{(delta.x} \hlkwb{<-} \hldef{(b}\hlopt{-}\hldef{a)}\hlopt{/}\hldef{n.rect)} \hlcom{#set a delta x based on a,b, and number of rectangles}
+  \hlkwa{if}\hldef{(method} \hlopt{==} \hlsng{"Left"}\hldef{)\{}
+    \hldef{left.points} \hlkwb{<-} \hldef{a} \hlopt{+} \hlnum{0}\hlopt{:}\hlnum{99}\hlopt{*}\hldef{(delta.x)}
+    \hldef{(area} \hlkwb{<-} \hlkwd{sum}\hldef{(delta.x}\hlopt{*}\hldef{(}\hlkwd{integrand}\hldef{(left.points))))}
+  \hldef{\}}\hlkwa{else if}\hldef{(method} \hlopt{==} \hlsng{"Right"}\hldef{)\{}
+    \hldef{right.points} \hlkwb{<-} \hldef{a} \hlopt{+} \hlnum{1}\hlopt{:}\hlnum{100}\hlopt{*}\hldef{(delta.x)}
+    \hldef{(area} \hlkwb{<-} \hlkwd{sum}\hldef{(delta.x}\hlopt{*}\hldef{(}\hlkwd{integrand}\hldef{(right.points))))}
+  \hldef{\}}\hlkwa{else if}\hldef{(method} \hlopt{==} \hlsng{"Midpoint"}\hldef{)\{}
+    \hldef{mid.points} \hlkwb{<-} \hldef{(left.points}\hlopt{+}\hldef{right.points)}\hlopt{/}\hlnum{2}
+    \hldef{(area} \hlkwb{<-} \hlkwd{sum}\hldef{(delta.x}\hlopt{*}\hldef{(}\hlkwd{integrand}\hldef{(mid.points))))}
+  \hldef{\}}\hlkwa{else if}\hldef{(method} \hlopt{==} \hlsng{"Trapezoidial"}\hldef{)\{}
+    \hldef{trap.points} \hlkwb{<-} \hldef{a} \hlopt{+} \hlnum{0}\hlopt{:}\hlnum{100}\hlopt{*}\hldef{(delta.x)}
+    \hldef{vector.areas} \hlkwb{<-} \hldef{delta.x}\hlopt{*}\hldef{(}\hlkwd{integrand}\hldef{(trap.points))}
+    \hldef{(area} \hlkwb{<-} \hldef{(}\hlnum{1}\hlopt{/}\hlnum{2}\hldef{)}\hlopt{*}\hldef{vector.areas[}\hlnum{1}\hldef{]} \hlopt{+} \hlkwd{sum}\hldef{(vector.areas[}\hlnum{2}\hlopt{:}\hlnum{100}\hldef{])} \hlopt{+} \hldef{(}\hlnum{1}\hlopt{/}\hlnum{2}\hldef{)}\hlopt{*}\hldef{vector.areas[}\hlnum{101}\hldef{])}
+  \hldef{\}}\hlkwa{else}\hldef{\{}
+    \hlkwd{stop}\hldef{(}\hlsng{"Please select a valid method (e.g., 'Left', 'Right', 'Midpoint', 'Trapezoidial')"}\hldef{)}
+  \hldef{\}}
+  \hlcom{######################################}
+  \hlcom{# Return the area}
+  \hlcom{######################################}
+  \hlkwd{return}\hldef{(area)}
+\hldef{\}}
+\hlcom{######################################}
+\hlcom{# Test the function}
+\hlcom{######################################}
+\hlkwd{riemann.sums}\hldef{(}\hlkwc{fnct} \hldef{= integrand,}
+             \hlkwc{a} \hldef{=} \hlnum{0}\hldef{,}
+             \hlkwc{b} \hldef{=} \hlnum{2}\hldef{,}
+             \hlkwc{n.rect} \hldef{=} \hlnum{100}\hldef{)}
+\end{alltt}
+\begin{verbatim}
+## [1] 8.6664
+\end{verbatim}
+\begin{alltt}
+\hlcom{#=8.7464 for Left, =8.5864 for Right, =8.6668 for Midpoint, =8.6664 for Trapezoidial}
+\hlcom{######################################}
+\hlcom{# Compare to numerical integral}
+\hlcom{######################################}
+\hlkwd{integrate}\hldef{(}\hlkwc{f} \hldef{= integrand,} \hlcom{# integrate() is an R function}
+          \hlkwc{lower} \hldef{=} \hlnum{0}\hldef{,}     \hlcom{# that completes numerical}
+          \hlkwc{upper} \hldef{=} \hlnum{2}\hldef{)}     \hlcom{# integration}
+\end{alltt}
+\begin{verbatim}
+## 8.666667 with absolute error < 9.8e-14
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{enumerate}
+\end{enumerate}
+
+\bibliography{bibliography}
+\end{document}

@@ -67,8 +67,10 @@ mid.points <- (left.points+right.points)/2
 \begin{enumerate}
   \item Write code that computes the area using the Trapezoidial Rule.\\
   \textbf{Solution:}
-<<size="scriptsize", warning=FALSE, message=FALSE>>=
-# Write code for answer here.
+<<size='scriptsize', warning=FALSE, message=FALSE>>=
+trap.points <- a + 0:100*(delta.x)
+vector.areas <- delta.x*(integrand(trap.points)) #vector that the integrand function returns
+(trap.area <- (1/2)*vector.areas[1] + sum(vector.areas[2:100]) + (1/2)*vector.areas[101])
 @
   \item Write a function that takes \texttt{a}, \texttt{b}, and number of 
   rectangles (\texttt{n.rect}) in as input and returns the Trapezoidial Rule 
@@ -76,7 +78,7 @@ mid.points <- (left.points+right.points)/2
   skeleton below. When you are done, remove \texttt{eval=FALSE} to show that
   the function provides the expected result for the example above.\\
   \textbf{Solution:}
-<<eval=FALSE, size="scriptsize", warning=FALSE, message=FALSE>>=
+<<size="scriptsize", warning=FALSE, message=FALSE>>=
 riemann.sums <- function(fnct,                        # function to integrate
                          a,                           # lower bound of integral
                          b,                           # upper bound of integral
@@ -97,14 +99,20 @@ riemann.sums <- function(fnct,                        # function to integrate
   ######################################
   # Compute Area
   ######################################
+  (delta.x <- (b-a)/n.rect) #set a delta x based on a,b, and number of rectangles
   if(method == "Left"){
-    # Add necessary code here
+    left.points <- a + 0:99*(delta.x)
+    (area <- sum(delta.x*(integrand(left.points))))
   }else if(method == "Right"){
-    # Add necessary code here
+    right.points <- a + 1:100*(delta.x)
+    (area <- sum(delta.x*(integrand(right.points))))
   }else if(method == "Midpoint"){
-    # Add necessary code here
+    mid.points <- (left.points+right.points)/2
+    (area <- sum(delta.x*(integrand(mid.points))))
   }else if(method == "Trapezoidial"){
-    # Add necessary code here
+    trap.points <- a + 0:100*(delta.x)
+    vector.areas <- delta.x*(integrand(trap.points))
+    (area <- (1/2)*vector.areas[1] + sum(vector.areas[2:100]) + (1/2)*vector.areas[101])
   }else{
     stop("Please select a valid method (e.g., 'Left', 'Right', 'Midpoint', 'Trapezoidial')")
   }
@@ -120,6 +128,7 @@ riemann.sums(fnct = integrand,
              a = 0,
              b = 2,
              n.rect = 100)
+#=8.7464 for Left, =8.5864 for Right, =8.6668 for Midpoint, =8.6664 for Trapezoidial
 ######################################
 # Compare to numerical integral
 ######################################
